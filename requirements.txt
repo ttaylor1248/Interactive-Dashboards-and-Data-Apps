@@ -13,7 +13,7 @@ cffi==1.14.5
 chardet==4.0.0
 click==7.1.2
 dash==1.19.0
-dash-bootstrap-components==0.11.3
+dash-bootstrap-components==1.2.1
 dash-core-components==1.15.0
 dash-html-components==1.1.2
 dash-renderer==1.9.0
@@ -37,6 +37,7 @@ json5==0.9.5
 jsonschema==3.2.0
 jupyter-client==6.1.12
 jupyter-core==4.7.1
+jupyter-plotly-dash==0.4.3
 jupyter-dash==0.4.0
 jupyter-packaging==0.7.12
 jupyter-server==1.4.1
