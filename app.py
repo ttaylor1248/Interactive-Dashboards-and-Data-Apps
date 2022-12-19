@@ -1,13 +1,22 @@
 from jupyter_dash import JupyterDash
 from dash import html
 from dash import dcc
+from dash.dependencies import Output, Input
 import dash_bootstrap_components as dbc
+import pandas as pd
+
+poverty_data = pd.read_csv('data/PovStatsData.csv')
+country_data = pd.read_csv('data/PovStatsData.csv')
 
 # , external_stylesheets=[dbc.themes.BOOTSTRAP]
 app = JupyterDash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = html.Div([
-    dcc.Dropdown(options=[{'label': color, 'value': color} for color in [
-        'blue', 'green', 'yellow']]),
+    dcc.Dropdown(id='country', options=[{'label': country, 'value': country}
+                                        for country in
+                                        poverty_data['Country Name'].unique()
+                                        ]),
+    html.Div(id='report'),
+
     html.H1('Poverty and Equity Database',
             style={'color': 'blue',
                    'fontSize': '40px'}),
@@ -47,3 +56,17 @@ app.layout = html.Div([
     ])
 
 ])
+
+
+@app.callback(Output('report', 'children'),
+              Input('country', 'value'))
+def display_country_report(country):
+    if country is None:
+        return ''
+    filtered_df = country_data[(country_data['Country Name'] == country)
+                               & (country_data[
+                                      'Indicator Name'] == 'Population, '
+                                                           'total')]
+    population = filtered_df.loc[:, '2010'].values[0]
+    return [html.H3(country),
+            'The population of %s in 2010 was %d.' % (country, population)]
